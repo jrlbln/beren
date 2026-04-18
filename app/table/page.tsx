@@ -111,14 +111,14 @@ export default function SheetPage() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-[2rem] bg-slate-950 px-6 py-8 text-white shadow-lg sm:px-8 sm:py-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-amber-300">
-          Beren
+      <section className="rounded-[2rem] border border-slate-200 bg-white/85 px-6 py-8 shadow-sm backdrop-blur sm:px-8 sm:py-10">
+        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
+          Table
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
           Kana Sheet
         </h1>
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
           Learn hiragana and katakana in a clean chart layout with built-in audio.
         </p>
       </section>

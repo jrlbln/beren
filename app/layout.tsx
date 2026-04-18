@@ -3,9 +3,9 @@ import { TabBar } from "@/components/UI/TabBar";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Beren",
+  title: "ベレン",
   description: "A Japanese language learning app for kana study and review.",
-  applicationName: "Beren",
+  applicationName: "ベレン",
   manifest: "/manifest.webmanifest",
 };
 
@@ -20,12 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full bg-[var(--background)] text-[var(--foreground)]">
-        <div className="flex min-h-screen flex-col">
-          <main className="mx-auto flex w-full max-w-[96rem] flex-1 flex-col px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <body className="h-full bg-[var(--background)] text-[var(--foreground)]">
+        <div className="flex min-h-full flex-col">
+          <TabBar />
+          <main className="mx-auto flex w-full max-w-[96rem] flex-1 flex-col overflow-visible px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
             {children}
           </main>
-          <TabBar />
         </div>
       </body>
     </html>

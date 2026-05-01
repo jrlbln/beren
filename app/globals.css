@@ -19,14 +19,29 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
   min-height: 100vh;
-  background: linear-gradient(180deg, #fffef8 0%, #f3f4f6 55%, #e5e7eb 100%);
+  background: #f3f4f6;
   color: var(--foreground);
   font-family: var(--font-sans);
   user-select: none;
+  overflow-y: scroll;
+}
+
+@media (max-width: 640px) {
+  html,
+  body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 button,

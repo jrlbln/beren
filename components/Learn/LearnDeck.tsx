@@ -26,7 +26,10 @@ function buildDeck(rows: KanaRow[]) {
   );
 }
 
-export function LearnDeck({ rows, showPronounceButton = true }: LearnDeckProps) {
+export function LearnDeck({
+  rows,
+  showPronounceButton = true,
+}: LearnDeckProps) {
   const [deck, setDeck] = useState<CardItem[]>(() => buildDeck(rows));
 
   const visibleItems = useMemo(() => deck.slice(0, 3), [deck]);
@@ -43,9 +46,9 @@ export function LearnDeck({ rows, showPronounceButton = true }: LearnDeckProps) 
   };
 
   return (
-    <div className="relative flex h-[calc(100dvh-10rem)] w-full flex-1 items-stretch justify-center overflow-visible px-0">
+    <div className="relative flex h-full min-h-0 w-full flex-1 items-center justify-center overflow-visible px-0">
       {visibleItems.length > 0 ? (
-        <div className="relative h-full w-full max-w-[34rem] self-stretch">
+        <div className="relative h-full max-h-full w-full max-w-[22rem] self-center sm:max-w-[26rem] md:max-w-[28rem] lg:max-w-[30rem]">
           {visibleItems
             .slice()
             .reverse()

@@ -14,13 +14,16 @@ export function CardScene({ character }: CardSceneProps) {
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <div className="flex min-h-[calc(100vh-10rem)] w-full items-stretch justify-center">
+    <div className="flex min-h-[calc(100vh-12rem)] w-full items-stretch justify-center sm:min-h-[calc(100vh-10rem)]">
       <div
-        className="relative flex min-h-[36rem] w-full cursor-pointer"
+        className="relative flex min-h-112 w-full cursor-pointer sm:min-h-128 md:min-h-144"
         onClick={() => setFlipped((value) => !value)}
       >
         {!flipped ? (
-          <CardFront character={character} onPronounce={() => playKanaAudio(character.romaji)} />
+          <CardFront
+            character={character}
+            onPronounce={() => playKanaAudio(character.romaji)}
+          />
         ) : (
           <CardBack character={character} />
         )}

@@ -22,26 +22,26 @@ export function CardFront({
 
   return (
     <div className="relative flex h-full w-full flex-col rounded-4xl border border-slate-200 bg-white/95 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.55)] backdrop-blur">
-      <div className="flex flex-1 flex-col items-center justify-between px-6 pt-4 pb-5">
-        <span className="text-[0.85rem] font-semibold uppercase tracking-[0.28em] text-slate-400">
+      <div className="flex flex-1 flex-col items-center justify-between px-4 pt-2 pb-2 sm:px-6 sm:pt-4 sm:pb-5">
+        <span className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-400 sm:text-[0.85rem] sm:tracking-[0.28em]">
           hiragana
         </span>
         <div className="flex flex-1 items-center justify-center">
-          <span className="text-[8.5rem] font-semibold leading-none text-slate-950 sm:text-[11rem]">
+          <span className="text-[8.4rem] font-semibold leading-none text-slate-950 sm:text-[8.5rem] md:text-[11rem]">
             {character.hiragana}
           </span>
         </div>
       </div>
 
-      <div className="relative flex items-center justify-center px-6 py-4">
-        <div className="flex w-full items-center gap-4">
+      <div className="relative flex items-center justify-center px-4 py-2 sm:px-6 sm:py-4">
+        <div className="flex w-full items-center gap-3 sm:gap-4">
           <div className="h-[3px] flex-1 rounded-full bg-slate-900/90" />
-          <div className="relative z-10 inline-flex w-fit items-center justify-center px-3">
+          <div className="relative z-10 inline-flex w-fit items-center justify-center px-2 sm:px-3">
             <button
               type="button"
               disabled={!showPronounceButton}
               aria-label={`Play pronunciation for ${character.romaji}`}
-              className={`relative inline-flex h-8 items-center justify-center px-0 ${
+              className={`relative inline-flex h-7 items-center justify-center px-0 sm:h-8 ${
                 showPronounceButton ? "cursor-pointer" : "cursor-default"
               }`}
               onClick={(event) => {
@@ -59,7 +59,7 @@ export function CardFront({
               <button
                 type="button"
                 aria-label={`Play pronunciation for ${character.romaji}`}
-                className="absolute left-full top-[40%] -ml-2.5 -translate-y-3 p-0"
+                className="absolute left-full top-[40%] -ml-2 -translate-y-3 p-0"
                 onClick={(event) => {
                   event.stopPropagation();
                   onPronounce?.();
@@ -73,11 +73,14 @@ export function CardFront({
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-between px-6 pt-5 pb-4">
-        <span className="text-[8.25rem] font-semibold leading-none text-slate-950 sm:text-[10.5rem]">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 pt-2 sm:px-6 sm:pt-5">
+        <span className="text-[8.4back trem] font-semibold leading-none text-slate-950 sm:text-[8.25rem] md:text-[10.5rem]">
           {character.katakana}
         </span>
-        <span className="text-[0.85rem] font-semibold uppercase tracking-[0.28em] text-slate-400">
+      </div>
+
+      <div className="flex items-center justify-center px-4 pb-2 sm:px-6 sm:pb-4">
+        <span className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-400 sm:text-[0.85rem] sm:tracking-[0.28em]">
           katakana
         </span>
       </div>

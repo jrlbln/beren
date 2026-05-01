@@ -128,13 +128,13 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
       ) : null}
 
       {phase === "items" && activeCategory ? (
-          <div className="flex flex-1 flex-col space-y-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold uppercase tracking-[0.34em] text-slate-950">
-                {activeCategory.title}
-              </p>
-            </div>
-            <div className={`${itemGridClass} flex-1 content-start`}>
+        <div className="flex flex-1 flex-col space-y-5 pt-3 sm:pt-4">
+          <div className="pb-1 text-center sm:pb-2">
+            <p className="text-2xl font-bold uppercase tracking-[0.34em] text-slate-950">
+              {activeCategory.title}
+            </p>
+          </div>
+          <div className={`${itemGridClass} flex-1 content-start`}>
               {activeCategory.items.map((item) => (
                 <button
                   key={item.id}
@@ -173,7 +173,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
       ) : null}
 
       {phase === "card" && activeItems.length > 0 ? (
-        <div className="flex min-h-0 flex-1 items-stretch justify-center py-2">
+        <div className="flex min-h-0 h-[calc(100dvh-18rem)] flex-1 items-center justify-center py-2 sm:h-[calc(100dvh-10rem)]">
           <LearnDeck
             rows={activeItems.map((item) => item.row)}
             showPronounceButton={activeCategory?.id === "kana"}

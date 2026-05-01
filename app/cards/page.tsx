@@ -2,12 +2,7 @@ import { CardsBrowser } from "@/components/Learn/CardsBrowser";
 import type { KanaRow } from "@/lib/kana";
 import { getBaseRows, getDakutenRows, getHandakutenRows } from "@/lib/kana";
 
-type CardsPageProps = {
-  searchParams: Promise<{ reset?: string }>;
-};
-
-export default async function CardsPage({ searchParams }: CardsPageProps) {
-  const { reset } = await searchParams;
+export default async function CardsPage() {
   const baseRows = getBaseRows();
   const dakutenRows = [...getDakutenRows(), ...getHandakutenRows()];
   const labelForRow = (row: KanaRow) => {
@@ -196,7 +191,6 @@ export default async function CardsPage({ searchParams }: CardsPageProps) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <CardsBrowser
-        key={reset ?? "base"}
         kanaRows={kanaRows}
         combinationItems={combinationItems}
         kanjiItems={[

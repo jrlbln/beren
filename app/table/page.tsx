@@ -1,13 +1,11 @@
-import { KanaTable } from "@/components/Sheet/KanaTable";
-import { VoicedKanaCard } from "@/components/Sheet/VoicedKanaCard";
-import { CombinationSection } from "@/components/Sheet/CombinationSection";
+import { TableBrowser } from "@/components/Sheet/TableBrowser";
 import {
   getBaseRows,
   getDakutenRows,
   getHandakutenRows,
 } from "@/lib/kana";
 
-export default function SheetPage() {
+export default async function SheetPage() {
   const baseRows = getBaseRows();
   const voicedRows = [...getDakutenRows(), ...getHandakutenRows()];
   const hiraganaGroups = [
@@ -99,51 +97,14 @@ export default function SheetPage() {
         { kana: "ニョ", romaji: "nyo" },
       ],
     },
-    {
-      title: "small kana note",
-      items: [
-        { kana: "ャ", romaji: "small ya" },
-        { kana: "ュ", romaji: "small yu" },
-        { kana: "ョ", romaji: "small yo" },
-      ],
-    },
   ];
 
   return (
-    <div className="space-y-8">
-      <section className="rounded-[2rem] border border-slate-200 bg-white/85 px-6 py-8 shadow-sm backdrop-blur sm:px-8 sm:py-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">
-          Table
-        </p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-          Kana Sheet
-        </h1>
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-          Learn hiragana and katakana in a clean chart layout with built-in audio.
-        </p>
-      </section>
-
-      <KanaTable
-        title="Hiragana"
-        rows={baseRows}
-        script="hiragana"
-      />
-
-      <VoicedKanaCard
-        hiraganaRows={voicedRows}
-        katakanaRows={voicedRows}
-      />
-
-      <KanaTable
-        title="Katakana"
-        rows={baseRows}
-        script="katakana"
-      />
-
-      <CombinationSection
-        hiraganaGroups={hiraganaGroups}
-        katakanaGroups={katakanaGroups}
-      />
-    </div>
+    <TableBrowser
+      baseRows={baseRows}
+      voicedRows={voicedRows}
+      hiraganaGroups={hiraganaGroups}
+      katakanaGroups={katakanaGroups}
+    />
   );
 }

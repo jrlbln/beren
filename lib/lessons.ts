@@ -75,6 +75,12 @@ export type LessonCardCategory = {
   items: LessonCardItem[];
 };
 
+export type LessonCardSourceGroup = {
+  id: "kana" | "dakuten";
+  title: string;
+  rows: KanaRow[];
+};
+
 export type LessonGroupItem = {
   id: string;
   kana: string;
@@ -146,7 +152,7 @@ export function makePlaceholderRow(id: string, label: string, index: number): Ka
 }
 
 export function buildLessonCardCategories(input: {
-  kanaRows: KanaRow[];
+  kanaRows: LessonCardSourceGroup[];
   combinationItems: LessonCardItem[];
   kanjiItems: Array<{ id: string; label: string }>;
 }): LessonCardCategory[] {

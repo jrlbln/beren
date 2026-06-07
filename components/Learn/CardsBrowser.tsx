@@ -3,17 +3,17 @@
 import { useEffect, useMemo, useReducer } from "react";
 import { LearnDeck } from "@/components/Learn/LearnDeck";
 import { KanjiDeck } from "@/components/Learn/KanjiDeck";
-import type { KanaRow } from "@/lib/kana";
 import {
   buildLessonCardCategories,
   initialLessonFlowState,
   kanjiRowOneSampleReadings,
   lessonFlowReducer,
   type LessonCardItem,
+  type LessonCardSourceGroup,
 } from "@/lib/lessons";
 
 type CardsBrowserProps = {
-  kanaRows: CardGroup[];
+  kanaRows: LessonCardSourceGroup[];
   combinationItems: LessonCardItem[];
   kanjiItems: Array<{ id: string; label: string }>;
 };
@@ -57,13 +57,13 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
                 key={category.id}
                 type="button"
                 onClick={() => dispatch({ type: "select-category", categoryId: category.id })}
-                className={`flex min-h-44 items-center justify-center rounded-[0.5rem] border-[3px] bg-white px-5 py-4 text-center text-slate-950 shadow-[0_6px_18px_-10px_rgba(15,23,42,0.35)] transition ${
+                className={`flex min-h-44 items-center justify-center rounded-lg border-[3px] bg-white px-5 py-4 text-center text-slate-950 shadow-[0_6px_18px_-10px_rgba(15,23,42,0.35)] transition ${
                   flow.activeCategoryId === category.id
                     ? "border-[#6aa7ff] text-[#6aa7ff]"
                     : "border-slate-900 hover:border-slate-700"
                 }`}
               >
-                <div className="max-w-full px-2 text-center text-[1rem] font-semibold leading-tight tracking-[0.08em] whitespace-normal break-words sm:text-[1.1rem] xl:text-[1.2rem]">
+                <div className="max-w-full px-2 text-center text-[1rem] font-semibold leading-tight tracking-[0.08em] whitespace-normal wrap-break-word sm:text-[1.1rem] xl:text-[1.2rem]">
                   {category.title}
                 </div>
               </button>

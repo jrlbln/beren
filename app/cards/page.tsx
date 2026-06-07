@@ -1,7 +1,7 @@
 import { CardsBrowser } from "@/components/Learn/CardsBrowser";
 import type { KanaRow } from "@/lib/kana";
 import { getBaseRows, getDakutenRows, getHandakutenRows } from "@/lib/kana";
-import { getCardsCombinationItems } from "@/lib/lessons";
+import { getCardsCombinationItems, type LessonCardSourceGroup } from "@/lib/lessons";
 
 export default async function CardsPage() {
   const baseRows = getBaseRows();
@@ -11,7 +11,7 @@ export default async function CardsPage() {
     const last = row.characters[row.characters.length - 1]?.romaji ?? first;
     return `${first}-${last}`;
   };
-  const kanaRows = [
+  const kanaRows: LessonCardSourceGroup[] = [
     {
       id: "kana",
       title: "KANA",

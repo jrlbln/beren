@@ -3,20 +3,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-
-const tabs = [
-  { href: "/cards", label: "Cards" },
-  { href: "/quiz", label: "Quiz" },
-  { href: "/table", label: "Table" },
-];
+import { appTabs } from "@/lib/lessons";
 
 export function TabBar() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const navigateWithReset = (href: string) => {
+    if (href === "/cards" || href === "/table") {
+      window.dispatchEvent(new CustomEvent("beren:reset-browser", { detail: { href } }));
+    }
+
+    router.push(href);
+  };
+
   return (
-    <header className="sticky top-4 z-30 mx-auto w-full max-w-384 px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center gap-4 rounded-[1.75rem] border border-slate-200/70 bg-white/85 px-4 py-3 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] backdrop-blur-xl">
+    <header className="sticky top-4 z-30 mx-auto w-full max-w-6xl px-3 sm:px-4 lg:px-5">
+      <div className="flex items-center gap-4 rounded-[1.75rem] border border-slate-200/70 bg-white/85 px-4 py-3 shadow-[0_18px_50px_-24px_rgba(15,23,42,0.35)] backdrop-blur-xl sm:px-5">
         <div className="flex items-center gap-3 rounded-full px-2 py-1.5">
           <Image
             src="/BLN_LOGO_WHITE.svg"
@@ -28,7 +31,7 @@ export function TabBar() {
         </div>
 
         <nav className="flex flex-1 items-center justify-center gap-2 sm:gap-3">
-          {tabs.map((tab) => {
+          {appTabs.map((tab) => {
             const isActive =
               pathname === tab.href || pathname.startsWith(`${tab.href}/`);
 
@@ -37,7 +40,7 @@ export function TabBar() {
                 <button
                   key={tab.href}
                   type="button"
-                  onClick={() => window.location.assign("/cards")}
+                  onClick={() => navigateWithReset("/cards")}
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition sm:px-5 ${
                     isActive
                       ? "bg-slate-950 text-white shadow-sm"
@@ -55,7 +58,7 @@ export function TabBar() {
                 <button
                   key={tab.href}
                   type="button"
-                  onClick={() => window.location.assign("/table")}
+                  onClick={() => navigateWithReset("/table")}
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition sm:px-5 ${
                     isActive
                       ? "bg-slate-950 text-white shadow-sm"

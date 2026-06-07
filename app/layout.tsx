@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className="h-full bg-background text-foreground">
         <div className="flex min-h-full flex-col">
           <TabBar />
-          <main className="mx-auto flex w-full max-w-384 flex-1 flex-col overflow-visible px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+          <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-visible px-3 py-4 sm:px-4 sm:py-5 lg:px-5">
             {children}
           </main>
         </div>

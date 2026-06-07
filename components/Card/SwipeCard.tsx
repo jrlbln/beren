@@ -24,7 +24,7 @@ export function SwipeCard({
 
   return (
     <motion.div
-      className={className}
+      className={`cursor-grab active:cursor-grabbing ${className ?? ""}`}
       style={{ x, rotate }}
       drag={leaving ? false : "x"}
       dragConstraints={{ left: 0, right: 0 }}

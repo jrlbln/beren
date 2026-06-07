@@ -1,97 +1,46 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { LearnDeck } from "@/components/Learn/LearnDeck";
-import type { KanaCharacter, KanaRow } from "@/lib/kana";
-
-type CardGroup = {
-  id: string;
-  title: string;
-  rows: KanaRow[];
-};
-
-type CategoryGroup = {
-  id: string;
-  title: string;
-  items: Array<{
-    id: string;
-    label: string;
-    row: KanaRow;
-  }>;
-};
+import { KanjiDeck } from "@/components/Learn/KanjiDeck";
+import type { KanaRow } from "@/lib/kana";
+import {
+  buildLessonCardCategories,
+  initialLessonFlowState,
+  kanjiRowOneSampleReadings,
+  lessonFlowReducer,
+  type LessonCardItem,
+} from "@/lib/lessons";
 
 type CardsBrowserProps = {
   kanaRows: CardGroup[];
-  combinationItems: Array<{ id: string; label: string; row: KanaRow }>;
+  combinationItems: LessonCardItem[];
   kanjiItems: Array<{ id: string; label: string }>;
 };
 
-function makeSingleCharacterRow(id: string, label: string, character: KanaCharacter): KanaRow {
-  return {
-    id,
-    label,
-    characters: [character],
-  };
-}
-
 export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBrowserProps) {
-  const categories = useMemo<CategoryGroup[]>(
-    () => [
-      {
-        id: "kana",
-        title: "KANA",
-        items: kanaRows[0]?.rows.map((row) => ({
-          id: row.id,
-          label: row.label,
-          row,
-        })) ?? [],
-      },
-      {
-        id: "dakuten",
-        title: "DAKUTEN / HANDAKUTEN",
-        items: kanaRows[1]?.rows.map((row) => ({
-          id: row.id,
-          label: row.label,
-          row,
-        })) ?? [],
-      },
-      {
-        id: "combination",
-        title: "COMBINATION",
-        items: combinationItems,
-      },
-      {
-        id: "kanji",
-        title: "KANJI",
-        items: kanjiItems.map((item, index) => {
-          const placeholder = makeSingleCharacterRow(
-            item.id,
-            item.label,
-            {
-              hiragana: "一",
-              katakana: "一",
-              romaji: `row${index + 1}`,
-            },
-          );
-
-          return {
-            id: item.id,
-            label: item.label,
-            row: placeholder,
-          };
-        }),
-      },
-    ],
+  const categories = useMemo(
+    () => buildLessonCardCategories({ kanaRows, combinationItems, kanjiItems }),
     [kanaRows, combinationItems, kanjiItems],
   );
 
-  const [phase, setPhase] = useState<"categories" | "items" | "card">("categories");
-  const [activeCategoryId, setActiveCategoryId] = useState<string>("");
-  const [activeItemIds, setActiveItemIds] = useState<string[]>([]);
+  const [flow, dispatch] = useReducer(lessonFlowReducer, initialLessonFlowState);
 
-  const activeCategory = categories.find((category) => category.id === activeCategoryId) ?? null;
+  useEffect(() => {
+    const handleReset = (event: Event) => {
+      const detail = (event as CustomEvent<{ href?: string }>).detail;
+      if (detail?.href === "/cards") {
+        dispatch({ type: "reset" });
+      }
+    };
+
+    window.addEventListener("beren:reset-browser", handleReset);
+    return () => window.removeEventListener("beren:reset-browser", handleReset);
+  }, []);
+
+  const activeCategory = categories.find((category) => category.id === flow.activeCategoryId) ?? null;
   const activeItems = activeCategory
-    ? activeCategory.items.filter((item) => activeItemIds.includes(item.id))
+    ? activeCategory.items.filter((item) => flow.activeItemIds.includes(item.id))
     : [];
   const itemGridClass =
     activeCategory?.id === "dakuten"
@@ -100,25 +49,21 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
 
   return (
     <section className="flex min-h-0 flex-1 flex-col">
-      {phase === "categories" ? (
+      {flow.phase === "categories" ? (
         <div className="flex flex-1 items-center justify-center">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid w-full max-w-5xl gap-4 md:grid-cols-2 xl:grid-cols-4">
             {categories.map((category) => (
               <button
                 key={category.id}
                 type="button"
-                onClick={() => {
-                  setActiveCategoryId(category.id);
-                  setActiveItemIds([]);
-                  setPhase("items");
-                }}
+                onClick={() => dispatch({ type: "select-category", categoryId: category.id })}
                 className={`flex min-h-44 items-center justify-center rounded-[0.5rem] border-[3px] bg-white px-5 py-4 text-center text-slate-950 shadow-[0_6px_18px_-10px_rgba(15,23,42,0.35)] transition ${
-                  activeCategoryId === category.id
+                  flow.activeCategoryId === category.id
                     ? "border-[#6aa7ff] text-[#6aa7ff]"
                     : "border-slate-900 hover:border-slate-700"
                 }`}
               >
-                <div className="text-[1.6rem] font-semibold tracking-[0.16em]">
+                <div className="max-w-full px-2 text-center text-[1rem] font-semibold leading-tight tracking-[0.08em] whitespace-normal break-words sm:text-[1.1rem] xl:text-[1.2rem]">
                   {category.title}
                 </div>
               </button>
@@ -127,7 +72,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
         </div>
       ) : null}
 
-      {phase === "items" && activeCategory ? (
+      {flow.phase === "items" && activeCategory ? (
         <div className="flex flex-1 flex-col space-y-5 pt-3 sm:pt-4">
           <div className="pb-1 text-center sm:pb-2">
             <p className="text-2xl font-bold uppercase tracking-[0.34em] text-slate-950">
@@ -139,20 +84,14 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
                 <button
                   key={item.id}
                   type="button"
-                onClick={() =>
-                  setActiveItemIds((current) =>
-                    current.includes(item.id)
-                      ? current.filter((id) => id !== item.id)
-                      : [...current, item.id],
-                  )
-                }
+                  onClick={() => dispatch({ type: "toggle-item", itemId: item.id })}
                   className={`flex min-h-16 w-full items-center justify-center rounded-2xl border px-4 py-3 text-center transition ${
-                    activeItemIds.includes(item.id)
+                    flow.activeItemIds.includes(item.id)
                       ? "border-slate-950 bg-slate-950 text-white"
                       : "border-slate-200 bg-white text-slate-800 hover:border-slate-400"
                   }`}
                 >
-                  <div className="text-base font-semibold tracking-[0.22em]">
+                  <div className="text-sm font-semibold tracking-[0.18em] sm:text-base">
                     {item.label}
                   </div>
                 </button>
@@ -163,7 +102,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
             <button
               type="button"
               disabled={activeItems.length === 0}
-              onClick={() => setPhase("card")}
+              onClick={() => dispatch({ type: "proceed" })}
               className="rounded-full bg-slate-950 px-8 py-3 text-sm font-semibold tracking-[0.18em] text-white transition disabled:cursor-not-allowed disabled:bg-slate-300"
             >
               Proceed
@@ -172,12 +111,16 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
         </div>
       ) : null}
 
-      {phase === "card" && activeItems.length > 0 ? (
+      {flow.phase === "card" && activeItems.length > 0 ? (
         <div className="flex min-h-0 h-[calc(100dvh-18rem)] flex-1 items-center justify-center py-2 sm:h-[calc(100dvh-10rem)]">
-          <LearnDeck
-            rows={activeItems.map((item) => item.row)}
-            showPronounceButton={activeCategory?.id === "kana"}
-          />
+          {activeCategory?.id === "kanji" ? (
+            <KanjiDeck readings={kanjiRowOneSampleReadings} />
+          ) : (
+            <LearnDeck
+              rows={activeItems.map((item) => item.row)}
+              showPronounceButton={activeCategory?.id === "kana"}
+            />
+          )}
         </div>
       ) : null}
     </section>

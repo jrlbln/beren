@@ -1,4 +1,5 @@
 type ComboItem = {
+  id: string;
   kana: string;
   romaji: string;
 };
@@ -36,7 +37,7 @@ function CombinationCard({
           <div key={group.title} className="grid grid-cols-3 gap-3">
             {group.items.map((item) => (
               <div
-                key={`${group.title}-${item.romaji}`}
+                key={item.id}
                 className="flex min-h-24 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/90 px-3 py-3 text-slate-900 shadow-sm"
               >
                 <span className="text-[2rem] font-semibold leading-none text-slate-950">
@@ -60,7 +61,7 @@ function CombinationCard({
             <div className="grid gap-3 sm:grid-cols-3">
               {group.items.map((item) => (
                 <div
-                  key={`${group.title}-${item.romaji}`}
+                  key={item.id}
                   className="flex min-h-24 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-slate-900 shadow-sm"
                 >
                   <span className="text-[2.1rem] font-semibold leading-none text-slate-950">

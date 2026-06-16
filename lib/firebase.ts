@@ -1,4 +1,5 @@
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import {
   browserLocalPersistence,
   getAuth,
@@ -24,6 +25,7 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 let app: FirebaseApp | null = null;
@@ -61,6 +63,15 @@ export function getFirebaseDb(): Firestore | null {
   }
 
   return getFirestore(currentApp);
+}
+
+export function initFirebaseAnalytics() {
+  const currentApp = getFirebaseApp();
+  if (!currentApp || !firebaseConfig.measurementId) {
+    return null;
+  }
+
+  return getAnalytics(currentApp);
 }
 
 export function getGoogleProvider() {

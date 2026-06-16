@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { FirebaseBootstrap } from "@/components/FirebaseBootstrap";
 import { TabBar } from "@/components/UI/TabBar";
 import "./globals.css";
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="h-full bg-background text-foreground">
         <div className="flex min-h-full flex-col">
+          <FirebaseBootstrap />
           <TabBar />
           <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col overflow-visible px-3 py-4 sm:px-4 sm:py-5 lg:px-5">
             {children}

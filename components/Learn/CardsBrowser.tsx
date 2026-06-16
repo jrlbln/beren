@@ -46,6 +46,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
     activeCategory?.id === "dakuten"
       ? "grid grid-cols-[minmax(10rem,1fr)] gap-3 w-full max-w-lg mx-auto"
       : "grid grid-cols-[repeat(2,minmax(8rem,1fr))] gap-3 w-full max-w-2xl mx-auto";
+  const itemGridItemClass = activeCategory?.items.length === 1 ? "col-span-2 max-w-sm mx-auto" : "";
 
   return (
     <section className="flex min-h-0 flex-1 flex-col">
@@ -85,7 +86,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
                   key={item.id}
                   type="button"
                   onClick={() => dispatch({ type: "toggle-item", itemId: item.id })}
-                  className={`flex min-h-16 w-full items-center justify-center rounded-2xl border px-4 py-3 text-center transition ${
+                  className={`flex min-h-16 w-full items-center justify-center rounded-2xl border px-4 py-3 text-center transition ${itemGridItemClass} ${
                     flow.activeItemIds.includes(item.id)
                       ? "border-slate-950 bg-slate-950 text-white"
                       : "border-slate-200 bg-white text-slate-800 hover:border-slate-400"

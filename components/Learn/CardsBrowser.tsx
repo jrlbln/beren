@@ -113,7 +113,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
       ) : null}
 
       {flow.phase === "card" && activeItems.length > 0 ? (
-        <div className="flex min-h-0 h-[calc(100dvh-18rem)] flex-1 items-center justify-center py-2 sm:h-[calc(100dvh-10rem)]">
+        <div className="flex h-[calc(100dvh-18rem)] min-h-[26rem] flex-1 items-center justify-center py-2 sm:h-[calc(100dvh-10rem)]">
           {activeCategory?.id === "kanji" ? (
             <KanjiDeck readings={kanjiRowOneSampleReadings} />
           ) : (

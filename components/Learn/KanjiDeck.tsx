@@ -36,7 +36,7 @@ export function KanjiDeck({ readings }: KanjiDeckProps) {
   return (
     <div className="relative flex h-full min-h-0 w-full flex-1 items-center justify-center overflow-visible px-0">
       {visibleItems.length > 0 ? (
-        <div className="relative h-full max-h-full w-full max-w-[22rem] self-center sm:max-w-[26rem] md:max-w-[28rem] lg:max-w-[30rem]">
+        <div className="relative aspect-[3/4] h-[min(100%,42rem,calc((100vw-1.5rem)*1.333))] w-auto max-w-full self-center">
           {visibleItems
             .slice()
             .reverse()

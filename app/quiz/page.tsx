@@ -7,7 +7,7 @@ import {
   kanjiRowOneSampleReadings,
   type LessonId,
 } from "@/lib/lessons";
-import { playSoundEffect } from "@/lib/audio";
+import { playSoundEffect, preloadSoundEffects } from "@/lib/audio";
 import { getQuizResultCopy } from "@/lib/quiz-messages";
 
 type QuizFlowPhase = "categories" | "script" | "items" | "quiz" | "results";
@@ -398,6 +398,10 @@ export default function QuizPage() {
   const resultCopy = getQuizResultCopy(score, resultTime);
 
   useEffect(() => {
+    preloadSoundEffects();
+  }, []);
+
+  useEffect(() => {
     if (phase !== "quiz" || finishedAt) return;
     const interval = window.setInterval(() => {
       setElapsedSeconds((value) => value + 1);
@@ -486,6 +490,7 @@ export default function QuizPage() {
     setFeedback(null);
     setWrongAnswer(null);
     setRevealedAnswer(null);
+    preloadSoundEffects();
     setPhase("quiz");
   };
 

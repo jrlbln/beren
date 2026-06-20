@@ -21,9 +21,9 @@ export default async function LearnRowPage({ params }: LearnRowPageProps) {
   }
 
   return (
-    <section className="flex h-full w-full flex-col overflow-hidden">
+    <section className="flex min-h-[calc(100dvh-9rem)] w-full flex-col">
       <LearnBootstrap seedCharacters={currentRow.characters} />
-      <div className="flex flex-1 items-center justify-center overflow-hidden">
+      <div className="flex h-[calc(100dvh-9rem)] min-h-[26rem] flex-1 items-center justify-center py-2">
         <LearnDeck rows={[currentRow]} />
       </div>
     </section>

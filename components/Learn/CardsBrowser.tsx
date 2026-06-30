@@ -115,7 +115,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
       ) : null}
 
       {isCardStage ? (
-        <div className="flex h-[calc(100dvh-8.5rem)] max-h-[calc(100dvh-8.5rem)] min-h-0 flex-1 touch-none items-center justify-center overflow-hidden overscroll-none py-1 sm:h-[calc(100dvh-10rem)] sm:max-h-[calc(100dvh-10rem)] sm:py-2">
+        <div className="flex h-[calc(100dvh-8.5rem)] max-h-[calc(100dvh-8.5rem)] min-h-0 flex-1 touch-none items-center justify-center overflow-visible overscroll-none px-5 py-6 sm:h-[calc(100dvh-10rem)] sm:max-h-[calc(100dvh-10rem)] sm:px-6 sm:py-8">
           {activeCategory?.id === "kanji" ? (
             <KanjiDeck readings={kanjiRowOneSampleReadings} />
           ) : (

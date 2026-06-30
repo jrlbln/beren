@@ -42,6 +42,16 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
   const activeItems = activeCategory
     ? activeCategory.items.filter((item) => flow.activeItemIds.includes(item.id))
     : [];
+  const isCardStage = flow.phase === "card" && activeItems.length > 0;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("beren-card-stage", isCardStage);
+
+    return () => {
+      document.documentElement.classList.remove("beren-card-stage");
+    };
+  }, [isCardStage]);
+
   const itemGridClass =
     activeCategory?.id === "dakuten"
       ? "grid grid-cols-[minmax(10rem,1fr)] gap-3 w-full max-w-lg mx-auto"
@@ -112,8 +122,8 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
         </div>
       ) : null}
 
-      {flow.phase === "card" && activeItems.length > 0 ? (
-        <div className="flex h-[calc(100dvh-18rem)] min-h-[26rem] flex-1 items-center justify-center py-2 sm:h-[calc(100dvh-10rem)]">
+      {isCardStage ? (
+        <div className="flex h-[calc(100dvh-8.5rem)] min-h-0 flex-1 items-center justify-center overflow-hidden py-1 sm:h-[calc(100dvh-10rem)] sm:py-2">
           {activeCategory?.id === "kanji" ? (
             <KanjiDeck readings={kanjiRowOneSampleReadings} />
           ) : (

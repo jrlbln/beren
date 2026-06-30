@@ -130,13 +130,6 @@ const shuffle = <T,>(items: T[]) => {
   return result;
 };
 
-const repeatToLength = <T,>(items: T[], length: number) => {
-  if (items.length === 0) return [];
-  const repeated: T[] = [];
-  while (repeated.length < length) repeated.push(...items);
-  return repeated.slice(0, length);
-};
-
 const kanaRows = getBaseRows();
 const dakutenRows = getDakutenRows();
 const handakutenRows = getHandakutenRows();
@@ -204,7 +197,7 @@ const quizCategories: QuizCategoryConfig[] = [
   },
 ];
 
-function getCategoryReadingPool(categoryId: QuizCategoryId, script: KanaScript) {
+function getCategoryReadingPool(categoryId: QuizCategoryId) {
   if (categoryId === "kana") {
     return kanaRows.flatMap((row) => row.characters.map((character) => character.romaji));
   }
@@ -339,9 +332,9 @@ function buildBalancedRoundItems(items: QuizItem[]) {
   return ordered;
 }
 
-function buildQuestionSet(items: QuizItem[], categoryId: QuizCategoryId, script: KanaScript) {
+function buildQuestionSet(items: QuizItem[], categoryId: QuizCategoryId) {
   const source = buildBalancedRoundItems(items);
-  const categoryReadings = getCategoryReadingPool(categoryId, script);
+  const categoryReadings = getCategoryReadingPool(categoryId);
   const kanjiReadings = kanjiRowOneSampleReadings.flatMap((item) =>
     item.onyomi.split("/").map((part) => part.trim()).filter(Boolean),
   );
@@ -383,7 +376,6 @@ export default function QuizPage() {
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [finishedAt, setFinishedAt] = useState<number | null>(null);
-  const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
   const [wrongAnswer, setWrongAnswer] = useState<string | null>(null);
   const [revealedAnswer, setRevealedAnswer] = useState<string | null>(null);
   const isRevealMode = revealedAnswer !== null;
@@ -424,7 +416,6 @@ export default function QuizPage() {
         setStartedAt(null);
         setElapsedSeconds(0);
         setFinishedAt(null);
-        setFeedback(null);
         setWrongAnswer(null);
         setRevealedAnswer(null);
       }
@@ -446,7 +437,6 @@ export default function QuizPage() {
     setStartedAt(null);
     setElapsedSeconds(0);
     setFinishedAt(null);
-    setFeedback(null);
     setWrongAnswer(null);
     setRevealedAnswer(null);
   };
@@ -479,7 +469,7 @@ export default function QuizPage() {
       return;
     const script = activeScript ?? "hiragana";
     const items = buildQuizItems(activeCategory, selectedGroupIds, script);
-    const roundQuestions = buildQuestionSet(items, activeCategory, script);
+    const roundQuestions = buildQuestionSet(items, activeCategory);
     setQuestions(roundQuestions);
     setQuestionIndex(0);
     setAttemptsLeft(MAX_ATTEMPTS);
@@ -487,7 +477,6 @@ export default function QuizPage() {
     setStartedAt(Date.now());
     setElapsedSeconds(0);
     setFinishedAt(null);
-    setFeedback(null);
     setWrongAnswer(null);
     setRevealedAnswer(null);
     preloadSoundEffects();
@@ -499,13 +488,11 @@ export default function QuizPage() {
 
     if (reading === currentQuestion.item.reading) {
       playSoundEffect("correct");
-      setFeedback("correct");
       setWrongAnswer(null);
       setRevealedAnswer(currentQuestion.item.reading);
       setScore((value) => value + 1);
       window.setTimeout(() => {
         const nextIndex = questionIndex + 1;
-        setFeedback(null);
         setAttemptsLeft(MAX_ATTEMPTS);
         setWrongAnswer(null);
         setRevealedAnswer(null);
@@ -523,21 +510,17 @@ export default function QuizPage() {
     if (attemptsLeft > 1) {
       playSoundEffect("wrong");
       setAttemptsLeft((value) => value - 1);
-      setFeedback("wrong");
       setWrongAnswer(reading);
       setRevealedAnswer(null);
-      window.setTimeout(() => setFeedback(null), 450);
       return;
     }
 
     playSoundEffect("wrong");
-    setFeedback("correct");
     setWrongAnswer(reading);
     setRevealedAnswer(currentQuestion.item.reading);
     setAttemptsLeft(MAX_ATTEMPTS);
     window.setTimeout(() => {
       const nextIndex = questionIndex + 1;
-      setFeedback(null);
       setWrongAnswer(null);
       setRevealedAnswer(null);
       if (nextIndex >= questions.length) {
@@ -661,8 +644,8 @@ export default function QuizPage() {
             </div>
 
             <div className="flex justify-center">
-              <div className="aspect-square w-full max-w-md rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-                <div className="flex h-full items-center justify-center rounded-[2rem] bg-white text-center text-slate-950">
+              <div className="aspect-square w-full max-w-md rounded-4xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+                <div className="flex h-full items-center justify-center rounded-4xl bg-white text-center text-slate-950">
                   <div className="text-8xl font-semibold leading-none tracking-tight sm:text-[8.5rem]">
                     {currentQuestion.item.kana}
                   </div>
@@ -701,7 +684,7 @@ export default function QuizPage() {
 
       {phase === "results" ? (
         <div className="flex flex-1 items-center justify-center">
-          <div className="flex min-h-[72vh] w-full max-w-2xl flex-col items-center justify-center rounded-[2rem] border border-slate-200 bg-white/90 p-8 text-center shadow-sm">
+          <div className="flex min-h-[72vh] w-full max-w-2xl flex-col items-center justify-center rounded-4xl border border-slate-200 bg-white/90 p-8 text-center shadow-sm">
             <h2 className="mt-4 text-3xl font-semibold text-slate-950">{resultCopy.headline}</h2>
             <p className="mt-3 text-sm leading-7 text-slate-600">{resultCopy.subtext}</p>
             <p className="mt-3 text-sm leading-7 text-slate-600">

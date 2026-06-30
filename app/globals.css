@@ -32,13 +32,6 @@ body {
 }
 
 @media (max-width: 640px) {
-  html.beren-card-stage,
-  html.beren-card-stage body {
-    height: 100%;
-    overflow: hidden;
-    overscroll-behavior: none;
-  }
-
   html,
   body {
     scrollbar-width: none;

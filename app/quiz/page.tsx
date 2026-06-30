@@ -603,7 +603,7 @@ export default function QuizPage() {
       ) : null}
 
       {phase === "items" && activeCategoryConfig ? (
-        <div className="flex flex-1 flex-col space-y-5 pt-3 sm:pt-4">
+        <div className="flex flex-1 flex-col pt-3 sm:pt-4">
           <div className="pb-1 text-center sm:pb-2">
             <p className="text-2xl font-bold uppercase tracking-[0.34em] text-slate-950">
               {activeCategoryConfig.title}
@@ -615,7 +615,7 @@ export default function QuizPage() {
             ) : null}
           </div>
 
-          <div className={`${getItemGridClass(activeCategory)} flex-1 content-start`}>
+          <div className={`${getItemGridClass(activeCategory)} mt-5 content-start`}>
             {activeCategoryConfig.groups.map((group) => (
               <button
                 key={group.id}
@@ -637,7 +637,7 @@ export default function QuizPage() {
             ))}
           </div>
 
-          <div className="mx-auto flex w-full max-w-xl items-center justify-center gap-4">
+          <div className="mx-auto mt-5 flex w-full max-w-xl items-center justify-center gap-4">
             <button
               type="button"
               disabled={selectedGroupIds.length === 0}
@@ -651,7 +651,7 @@ export default function QuizPage() {
       ) : null}
 
       {phase === "quiz" && currentQuestion ? (
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center pt-3 sm:pt-0">
           <div className="w-full max-w-2xl space-y-6">
             <div className="mx-auto flex w-full max-w-md items-center justify-between px-1 text-sm font-medium text-slate-600">
               <span>
@@ -670,7 +670,7 @@ export default function QuizPage() {
               </div>
             </div>
 
-            <div className="mx-auto grid w-full max-w-md gap-3 sm:grid-cols-2">
+            <div className="mx-auto grid w-full max-w-md grid-cols-2 gap-3">
               {currentQuestion.options.map((option) => {
                 const isCorrectReveal =
                   option === currentQuestion.item.reading && revealedAnswer === currentQuestion.item.reading;

@@ -74,13 +74,13 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
       ) : null}
 
       {flow.phase === "items" && activeCategory ? (
-        <div className="flex flex-1 flex-col space-y-5 pt-3 sm:pt-4">
+        <div className="flex flex-1 flex-col pt-3 sm:pt-4">
           <div className="pb-1 text-center sm:pb-2">
             <p className="text-2xl font-bold uppercase tracking-[0.34em] text-slate-950">
               {activeCategory.title}
             </p>
           </div>
-          <div className={`${itemGridClass} flex-1 content-start`}>
+          <div className={`${itemGridClass} mt-5 content-start`}>
               {activeCategory.items.map((item) => (
                 <button
                   key={item.id}
@@ -99,7 +99,7 @@ export function CardsBrowser({ kanaRows, combinationItems, kanjiItems }: CardsBr
               ))}
           </div>
 
-          <div className="flex justify-center">
+          <div className="mt-5 flex justify-center">
             <button
               type="button"
               disabled={activeItems.length === 0}
